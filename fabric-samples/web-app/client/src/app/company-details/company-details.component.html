@@ -1,0 +1,47 @@
+<div class="mainTitle"> Company Details</div>
+<table class="modal-table">
+    <colgroup>
+        <col style="width:120px">
+        <col style="width:380px">
+    </colgroup>
+    <tbody>
+        <tr>
+            <th>
+                Key
+            </th>
+            <td>
+                {{data.key}}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Company Name
+            </th>
+            <td>
+                {{data.company_name}}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                My Name
+            </th>
+            <td>
+                {{data.my_name}}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Your Name
+            </th>
+            <td>
+                {{data.your_name}}
+            </td>
+        </tr>    
+    </tbody>
+</table>
+
+
+<div class="modal-btn">
+    <button color="warning" mat-raised-button mat-dialog-close> EditBtn </button>
+    <button color="primary" mat-raised-button mat-dialog-close> Confirm </button>
+</div>

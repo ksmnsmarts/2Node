@@ -1,0 +1,124 @@
+<div class="mainContentContainer">
+    
+    <div class="mainContent" fxLayout="row">
+        <form #f="ngForm" [formGroup]="addCompanyForm" (ngSubmit)="onSubmit(f.value)">
+            <div>
+                <div class="mainTitle">Hyperledger-Fabric Test</div>
+            </div>
+            <div class="leaveTableContainer">
+                <div fxLayout="column" class="br_ltop">
+                    <!-- company name -->
+                    <div class="lineDivider" fxLayout="row">
+                        <div class="leftTable" fxFlex="30" fxFlex.gt-md="20">
+                            <div class="leftBox">
+                                <span>Company Name</span>
+                            </div>
+                        </div>
+                        <div class="rightTable" fxFlex="70" fxFlex.gt-md="70">
+                            <mat-form-field appearance="outline" class="companyFormFieldBox">
+                                <!-- <mat-label>Company Name</mat-label> -->
+                                <input matInput type="text" name="company_name" formControlName="company_name" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- My Name -->
+                    <div class="lineDivider" fxLayout="row">
+                        <div class="leftTable" fxFlex="30" fxFlex.gt-md="20">
+                            <div class="leftBox">
+                                <span>My Name</span>
+                            </div>
+                        </div>
+                        <div class="rightTable" fxFlex="70" fxFlex.gt-md="70">
+                            <mat-form-field appearance="outline" class="companyFormFieldBox">
+                                <!-- <mat-label>My Name</mat-label> -->
+                                <input matInput type="text" name="my_name" formControlName="my_name" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+
+                    <!-- Your Name -->
+                    <div class="lineDivider" fxLayout="row">
+                        <div class="leftTable" fxFlex="30" fxFlex.gt-md="20">
+                            <div class="leftBox">
+                                <span>Your Name</span>
+                            </div>
+                        </div>
+                        <div class="rightTable" fxFlex="70" fxFlex.gt-md="70">
+                            <mat-form-field appearance="outline" class="companyFormFieldBox">
+                                <!-- <mat-label>Your Name</mat-label> -->
+                                <input matInput type="text" name="your_name" formControlName="your_name" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div id="upload">
+                        <label>
+                            <input ngf-select type="file" (change)="onFileChange($event)" name="upload_file" >
+                            <div class="choose_button_span"><mat-icon> attach_file</mat-icon></div>
+                        </label>
+                    </div>
+
+<!--                     
+                    <mat-form-field appearance="outline" class="companyFormFieldBox">
+                            <input class="file" type='file' formControlName="upload_file" (change)="onFileChange($event)" style="display:none" name="contract_file" required ngModel />
+                        </mat-form-field> -->
+
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="center center" class="booterBtn">
+                    <div class="btnSection_1">
+                        <button mat-raised-button class="tableBtn" type="submit" color="primary">Request</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+
+        <div class="historyTableBox">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" class="item"> 
+    
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="key">
+                    <th mat-header-cell *matHeaderCellDef> Key </th>
+                    <td mat-cell *matCellDef="let element" class="item"> {{element.Key}}</td>
+                </ng-container>
+    
+                <!-- Weight Column -->
+                <ng-container matColumnDef="company_name">
+                    <th mat-header-cell *matHeaderCellDef> Company Name </th>
+                    <td mat-cell *matCellDef="let element" class="item"> {{element.Record.company_name}} </td>
+                </ng-container>
+    
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="my_name">
+                    <th mat-header-cell *matHeaderCellDef> My Name </th>
+                    <td mat-cell *matCellDef="let element"class="item"> {{element.Record.my_name}} </td>
+                </ng-container>
+    
+                <ng-container matColumnDef="your_name">
+                    <th mat-header-cell *matHeaderCellDef> Your Name </th>
+                    <td mat-cell *matCellDef="let element"class="item"> {{element.Record.your_name}} </td>
+                </ng-container>
+    
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="detailKey(row)"></tr>
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="9999">
+                        No data
+                    </td>
+                </tr>
+    
+    
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                aria-label="Select page of periodic elements">
+            </mat-paginator>
+    
+        </div>
+    </div>
+
+
+    
+</div>
