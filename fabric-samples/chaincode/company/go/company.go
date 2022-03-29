@@ -21,8 +21,8 @@ type Company struct {
 	Company_name   			string `json:"company_name"`
 	My_name  				string `json:"my_name"`
 	Your_name 				string `json:"your_name"`
-	upload_file_name 		string `json:"upload_file_name"`
-	upload_file_buffer 		string `json:"upload_file_buffer"`
+	Upload_file_name 		string `json:"upload_file_name"`
+	Upload_file_buffer 		string `json:"upload_file_buffer"`
 }
 
 /*
@@ -91,7 +91,9 @@ func (s *SmartContract) createCompany(APIstub shim.ChaincodeStubInterface, args 
 		return shim.Error("Incorrect number of arguments. Expecting 6")
 	}
 
-	var company = Company{Company_name: args[1], My_name: args[2], Your_name: args[3], upload_file_name: args[4], upload_file_buffer: ares[5]}
+	var company = Company{Company_name: args[1], My_name: args[2], Your_name: args[3], Upload_file_name: args[4], Upload_file_buffer: args[5]}
+
+	// var company = Company{Company_name: args[1], My_name: args[2], Your_name: args[3]}
 
 	companyAsBytes, _ := json.Marshal(company)
 	APIstub.PutState(args[0], companyAsBytes)

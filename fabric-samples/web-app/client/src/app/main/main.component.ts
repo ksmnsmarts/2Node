@@ -57,7 +57,12 @@ export class MainComponent implements OnInit {
     constructor(
         private companyService: CompanyService,
         public dialog: MatDialog,
-    ) { }
+        private formBuilder: FormBuilder
+    ) { 
+        this.uploadForm = this.formBuilder.group({
+            upload_file: ['']
+        });
+    }
 
     ngOnInit(): void {
 
@@ -74,20 +79,21 @@ export class MainComponent implements OnInit {
     // 회사 추가
     addCompany(data) {
 
-        // 이렇게 files[0]을 보내면 읽히지 않음
-        const companyData = {
-            company_name: this.addCompanyForm.value.company_name,
-            my_name: this.addCompanyForm.value.my_name,
-            your_name: this.addCompanyForm.value.your_name,
-        }
+        // 이렇게 보내면 file 값이 읽히지 않음
+        // const companyData = {
+        //     company_name: this.addCompanyForm.value.company_name,
+        //     my_name: this.addCompanyForm.value.my_name,
+        //     your_name: this.addCompanyForm.value.your_name,
+        //     upload_file: this.addCompanyForm.value.upload_file,
+        // }
 
 
         // FromData()를 사용해줘야 append 사용 가능하다
-        // const formData = new FormData();
-        // formData.append('company_name', data.company_name);
-        // formData.append('my_name', data.my_name);
-        // formData.append('your_name', data.your_name);
-        // formData.append('upload_file',this.uploadForm.get('upload_file').value);
+        const formData = new FormData();
+        formData.append('company_name', data.company_name);
+        formData.append('my_name', data.my_name);
+        formData.append('your_name', data.your_name);
+        formData.append('upload_file',this.uploadForm.get('upload_file').value);
         
 
         // spinner
@@ -98,24 +104,26 @@ export class MainComponent implements OnInit {
         });
 
         // Add company and store file buffer in blockchain
-        this.companyService.addCompany(companyData).subscribe(async () => {
+        this.companyService.addCompany(formData).subscribe(() => {
 
             // upload file buffer in DB
-            this.companyService.uploadFiles(this.fileData).subscribe(async () => {
+            this.companyService.uploadFiles(formData).subscribe(async () => {
 
-                await this.getCompany();
+                this.getCompany();
         
-                dialogRef.close();
+                await dialogRef.close();
             })
         })
     }
 
 
     // 파일 업로드
-    onFileChange(fildData: any) {
-    if (fildData.target.files.length > 0) {
-      this.fileData = fildData.target.files[0];
+    onFileChange(fileData: any) {
+    if (fileData.target.files.length > 0) {
+      this.fileData = fileData.target.files[0];
       console.log(this.fileData);
+
+      this.uploadForm.get('upload_file').setValue(this.fileData);
     }
   }
 

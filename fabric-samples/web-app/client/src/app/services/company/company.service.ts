@@ -24,9 +24,7 @@ export class CompanyService {
 
     // 파일 업로드
     uploadFiles(data) {
-        const formData = new FormData();
-        formData.append('upload_file', data);
-        return this.http.post('/api/v1/company/uploadFiles', formData);
+        return this.http.post('/api/v1/company/uploadFiles', data);
     }
 
 }

@@ -1,5 +1,6 @@
 const { ObjectId } = require('bson');
 const network = require('../../../../fabric/network.js')
+const fs = require("fs");
 
 
 exports.addCompany = async (req, res) => {
@@ -14,8 +15,6 @@ exports.addCompany = async (req, res) => {
 
     try {
 
-        console.log(req.body)
-
         const criteria = {
             company_name: req.body.company_name,
             my_name: req.body.my_name,
@@ -26,14 +25,32 @@ exports.addCompany = async (req, res) => {
         // await addCompany.save();
 
         network.queryAllCompany().then((response) => {
-                var carsRecord = JSON.parse(response);
-                var numCars = carsRecord.length;
-                var newKey = 'Company' + numCars;
-                network.createCompany(newKey, req.body.company_name, req.body.my_name, req.body.your_name)
-                    .then((response) => {
-                        return res.send(response)
-                    })
+            var carsRecord = JSON.parse(response);
+            var numCars = carsRecord.length;
+            var newKey = 'Company' + numCars;
+
+            // 파일시스템에서 파일 열기
+            fs.open(req.files[0].path, "r", function (err, fd) {
+                // binary 데이터를 저장하기 위해 파일 사이즈 만큼의 크기를 갖는 Buffer 객체 생성
+                const buffer = Buffer.alloc(req.files[0].size);
+                fs.read(fd, buffer, 0, buffer.length, null, function (err, bytes, buffer) {
+                    const obj = {
+                        "originalFileName": req.files[0].originalname,
+                        "filePath": req.files[0].path,
+                        "fileSize": req.files[0].size,
+                        "file": buffer,
+                        "Key": newKey
+                    };
+
+
+                    base64EncodedText = Buffer.from(obj.file, "utf8").toString('base64');
+                    network.createCompany(newKey, req.body.company_name, req.body.my_name, req.body.your_name, obj.originalFileName, base64EncodedText)
+                        .then((response) => {
+                            return res.send(response)
+                        })
+                })
             })
+        })
 
     } catch (err) {
 

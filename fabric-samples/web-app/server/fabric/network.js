@@ -72,7 +72,7 @@ exports.queryAllCompany = async function() {
 
 
 // create car transaction
-exports.createCompany = async function(key, company_name, my_name, your_name) {
+exports.createCompany = async function(key, company_name, my_name, your_name, upload_file_name, upload_file_buffer) {
     try {
 
         var response = {};
@@ -106,7 +106,7 @@ exports.createCompany = async function(key, company_name, my_name, your_name) {
         // Submit the specified transaction.
         // createCar transaction - requires 5 argument, ex: ('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom')
 
-        await contract.submitTransaction('createCompany', key, company_name, my_name, your_name);
+        await contract.submitTransaction('createCompany', key, company_name, my_name, your_name, upload_file_name, upload_file_buffer);
         console.log('Transaction has been submitted');
 
         // Disconnect from the gateway.

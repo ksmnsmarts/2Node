@@ -33,7 +33,7 @@ const upload = multer({
 
 // company controller
 router.get('/queryAllCompany', companyController.queryAllCompany);
-router.post('/addCompany', companyController.addCompany);
+router.post('/addCompany', upload.any(), companyController.addCompany);
 
 // upload file controller
 router.post('/uploadFiles', upload.any(), uploadFilesController.uploadFiles);
