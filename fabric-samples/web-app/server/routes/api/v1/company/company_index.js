@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const companyController = require('./company_controller');
-const uploadFilesController = require('./uploadFiles_controller');
 
 
 // multer 설정 s3 적용은 x-----------------------------------------------
@@ -34,9 +33,8 @@ const upload = multer({
 // company controller
 router.get('/queryAllCompany', companyController.queryAllCompany);
 router.post('/addCompany', upload.any(), companyController.addCompany);
+router.get('/fileDownload', companyController.fileDownload);
 
-// upload file controller
-router.post('/uploadFiles', upload.any(), uploadFilesController.uploadFiles);
 
 
 module.exports = router;

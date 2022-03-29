@@ -89,7 +89,7 @@
     box-shadow: 0 1px 4px 0 rgb(0 0 0 / 14%);
     // min-width: 1200px;
     margin-top: 50px;
-    text-align: right;
+    text-align: center;
 }
 
 .historyTable {
@@ -123,6 +123,10 @@
     color: red;
 }
 
+
+th{
+    text-align: center;
+}
 
 tr:hover {
     cursor: pointer;

@@ -29,7 +29,7 @@ export class MainComponent implements OnInit {
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
     // view table
-    displayedColumns: string[] = ['key', 'company_name', 'my_name', 'your_name'];
+    displayedColumns: string[] = ['key', 'company_name', 'my_name', 'your_name', 'upload_file_name'];
 
 
     uploadForm: FormGroup;
@@ -104,15 +104,10 @@ export class MainComponent implements OnInit {
         });
 
         // Add company and store file buffer in blockchain
-        this.companyService.addCompany(formData).subscribe(() => {
-
-            // upload file buffer in DB
-            this.companyService.uploadFiles(formData).subscribe(async () => {
-
-                this.getCompany();
-        
-                await dialogRef.close();
-            })
+        this.companyService.addCompany(formData).subscribe(async () => {
+            await this.getCompany();
+    
+            dialogRef.close();
         })
     }
 
@@ -132,6 +127,7 @@ export class MainComponent implements OnInit {
 
     getCompany() {
         this.companyService.queryAllCompany().subscribe((data:any) => {
+            console.log(data)
             this.dataSource = new MatTableDataSource<PeriodicElement>(data);
             this.dataSource.paginator = this.paginator;
         });
@@ -147,6 +143,7 @@ export class MainComponent implements OnInit {
                 company_name: data.Record.company_name,
                 my_name: data.Record.my_name,
                 your_name: data.Record.your_name,
+                upload_file_name: data.Record.upload_file_name
             }
         });
         

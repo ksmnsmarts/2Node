@@ -57,7 +57,8 @@ exports.queryAllCompany = async function() {
         // queryAllCompany transaction - requires no arguments, ex: ('queryAllCompany')
         const result = await contract.evaluateTransaction('queryAllCompany');
 
-        console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        console.log(`Transaction has been evaluated, result is:`);
         console.log('+---------------------------------------------+')
 
         return result;

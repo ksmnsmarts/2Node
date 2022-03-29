@@ -76,30 +76,40 @@
 
 
         <div class="historyTableBox">
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" class="item"> 
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" class="item" style="width: 800px;"> 
     
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="key">
-                    <th mat-header-cell *matHeaderCellDef> Key </th>
+                    <th mat-header-cell *matHeaderCellDef style="
+                    text-align: center"> Key </th>
                     <td mat-cell *matCellDef="let element" class="item"> {{element.Key}}</td>
                 </ng-container>
     
                 <!-- Weight Column -->
                 <ng-container matColumnDef="company_name">
-                    <th mat-header-cell *matHeaderCellDef> Company Name </th>
+                    <th mat-header-cell *matHeaderCellDef style="
+                    text-align: center"> Company Name </th>
                     <td mat-cell *matCellDef="let element" class="item"> {{element.Record.company_name}} </td>
                 </ng-container>
     
                 <!-- Symbol Column -->
                 <ng-container matColumnDef="my_name">
-                    <th mat-header-cell *matHeaderCellDef> My Name </th>
+                    <th mat-header-cell *matHeaderCellDef style="
+                    text-align: center"> My Name </th>
                     <td mat-cell *matCellDef="let element"class="item"> {{element.Record.my_name}} </td>
                 </ng-container>
     
                 <ng-container matColumnDef="your_name">
-                    <th mat-header-cell *matHeaderCellDef> Your Name </th>
+                    <th mat-header-cell *matHeaderCellDef style="
+                    text-align: center"> Your Name </th>
                     <td mat-cell *matCellDef="let element"class="item"> {{element.Record.your_name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="upload_file_name">
+                    <th mat-header-cell *matHeaderCellDef style="
+                    text-align: center">  </th>
+                    <td mat-cell *matCellDef="let element"class="item"> <mat-icon class="cursor">visibility</mat-icon> </td>
                 </ng-container>
     
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

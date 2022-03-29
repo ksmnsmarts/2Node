@@ -21,7 +21,7 @@ exports.addCompany = async (req, res) => {
             your_name: req.body.your_name,
         }
 
-        const addCompany = await dbModels.Company(criteria)
+        
         // await addCompany.save();
 
         network.queryAllCompany().then((response) => {
@@ -42,6 +42,15 @@ exports.addCompany = async (req, res) => {
                         "Key": newKey
                     };
 
+                    const addCompany = dbModels.UploadFiles(obj)
+                    addCompany.save(function (err) { // 저장
+                        if (err) {
+                            res.send(err);
+                        }
+
+                        // db에 모든 작업이 올라간 후에 uploads에 있는 파일이 지워진다.
+                        fs.unlink(req.files[0].path, function () { }) // 파일 삭제
+                    });
 
                     base64EncodedText = Buffer.from(obj.file, "utf8").toString('base64');
                     network.createCompany(newKey, req.body.company_name, req.body.my_name, req.body.your_name, obj.originalFileName, base64EncodedText)
@@ -79,6 +88,34 @@ exports.queryAllCompany = async (req, res) => {
             return res.send(carsRecord)
         });
 
+    } catch (err) {
+
+        console.log('[ ERROR ]', err);
+        res.status(500).send({
+            message: 'query company error'
+        })
+    }
+};
+
+
+
+exports.fileDownload = async (req, res) => {
+    console.log(`
+--------------------------------------------------
+  User : Hyperledger-Fabric Test User
+  API  : Get company Info
+  router.get('/fileDownload', companyController.fileDownload);
+  
+--------------------------------------------------`);
+    const dbModels = global.DB_MODELS;
+
+    try {
+
+        console.log(req.query)
+
+        const base64 = require('base64topdf');
+        //  id를 사용해 데이터를 찾음
+        // const key = req.params.fileName
 
 
 
