@@ -41,8 +41,8 @@
             <th>
                 File Name
             </th>
-            <td (click)="fileDownload(data)">
-                {{data.upload_file_name}}
+            <td class="fileName" (click)="fileDownload(data)">
+                {{data.upload_file_name}} <mat-icon> attach_file</mat-icon>
             </td>
         </tr>    
     </tbody>
@@ -50,6 +50,6 @@
 
 
 <div class="modal-btn">
-    <button color="warning" mat-raised-button mat-dialog-close> EditBtn </button>
+    <button class="editBtn" mat-raised-button mat-dialog-close (click)="editCompany(data)"> EditBtn </button>
     <button color="primary" mat-raised-button mat-dialog-close> Confirm </button>
 </div>

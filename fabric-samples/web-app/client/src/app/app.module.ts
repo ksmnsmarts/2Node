@@ -12,12 +12,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { DialogModule } from './dialog/dialog.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CompanyDetailsComponent } from './company-details/company-details.component';
+import { EditComponent } from './edit/edit.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         MainComponent,
         CompanyDetailsComponent,
+        EditComponent,
     ],
     imports: [
         BrowserModule,

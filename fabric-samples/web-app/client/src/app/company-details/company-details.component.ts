@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CompanyService } from '../services/company/company.service';
 import { saveAs } from 'file-saver';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-company-details',
@@ -14,6 +15,7 @@ export class CompanyDetailsComponent implements OnInit {
         public dialogRef: MatDialogRef<CompanyDetailsComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private companyService: CompanyService,
+        private router: Router
     ) { }
 
     ngOnInit(): void {
@@ -26,17 +28,27 @@ export class CompanyDetailsComponent implements OnInit {
     fileDownload(element) {
 
         const data = {
-            key : element.key
+            key: element.key
         }
 
         // saveAs("/uploads/upload_file/" + fileData.filename, fileData.originalname, { type: fileData.fileType });
         this.companyService.fileDownload(data).subscribe(res => {
-        //     console.log(res)
-        //     const blob = res;
-        //     saveAs(blob, data.originalname);
+            console.log(res)
+
+                const blob = res;
+                saveAs(blob, this.data.upload_file_name);
         });
         // console.log(fileData)
         //this.dialogService.openDialogPositive('succeed file download!');
+    }
+
+
+
+    editCompany(data) {
+        
+        // this.router.navigate([`/edit`], {state: {data: data}});
+        this.router.navigate([`/edit/`+ data.key]);
+        
     }
 
 }

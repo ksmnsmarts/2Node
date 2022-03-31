@@ -108,7 +108,12 @@ if [ "${NO_CHAINCODE}" != "true" ]; then
 	# Query chaincode on peer0.org1
 	echo "Querying chaincode on peer0.org1..."
 	chaincodeQuery 0 1
-	
+	echo "Querying chaincode on peer1.org1..."
+	chaincodeQuery 1 1
+    echo "Querying chaincode on peer0.org2..."
+	chaincodeQuery 0 2
+	echo "Querying chaincode on peer1.org2..."
+	chaincodeQuery 1 2
 fi
 
 echo

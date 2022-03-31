@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -52,15 +52,18 @@ export class MainComponent implements OnInit {
 
     public dataSource: any;
     public fileData: File;
-    
+
 
     constructor(
         private companyService: CompanyService,
         public dialog: MatDialog,
         private formBuilder: FormBuilder
-    ) { 
+    ) {
         this.uploadForm = this.formBuilder.group({
-            upload_file: ['']
+            company_name: ['', Validators.required],
+            my_name: ['', Validators.required],
+            your_name: ['', Validators.required],
+            upload_file: ['', Validators.required]
         });
     }
 
@@ -93,20 +96,20 @@ export class MainComponent implements OnInit {
         formData.append('company_name', data.company_name);
         formData.append('my_name', data.my_name);
         formData.append('your_name', data.your_name);
-        formData.append('upload_file',this.uploadForm.get('upload_file').value);
-        
+        formData.append('upload_file', this.uploadForm.get('upload_file').value);
+
 
         // spinner
         const dialogRef = this.dialog.open(SpinnerDialogComponent, {
             data: {
-                content: 'create'
+                content: 'Create'
             }
         });
 
         // Add company and store file buffer in blockchain
         this.companyService.addCompany(formData).subscribe(async () => {
             await this.getCompany();
-    
+
             dialogRef.close();
         })
     }
@@ -114,20 +117,20 @@ export class MainComponent implements OnInit {
 
     // 파일 업로드
     onFileChange(fileData: any) {
-    if (fileData.target.files.length > 0) {
-      this.fileData = fileData.target.files[0];
-      console.log(this.fileData);
+        if (fileData.target.files.length > 0) {
+            this.fileData = fileData.target.files[0];
+            //   console.log(this.fileData);
 
-      this.uploadForm.get('upload_file').setValue(this.fileData);
+            this.uploadForm.get('upload_file').setValue(this.fileData);
+        }
     }
-  }
 
 
 
 
     getCompany() {
-        this.companyService.queryAllCompany().subscribe((data:any) => {
-            console.log(data)
+        this.companyService.queryAllCompany().subscribe((data: any) => {
+            // console.log(data)
             this.dataSource = new MatTableDataSource<PeriodicElement>(data);
             this.dataSource.paginator = this.paginator;
         });
@@ -146,8 +149,8 @@ export class MainComponent implements OnInit {
                 upload_file_name: data.Record.upload_file_name
             }
         });
-        
-        dialogRef.afterClosed().subscribe(async(result) => {
+
+        dialogRef.afterClosed().subscribe(async (result) => {
         })
     }
 

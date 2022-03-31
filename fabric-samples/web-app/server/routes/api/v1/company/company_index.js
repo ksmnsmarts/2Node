@@ -34,7 +34,8 @@ const upload = multer({
 router.get('/queryAllCompany', companyController.queryAllCompany);
 router.post('/addCompany', upload.any(), companyController.addCompany);
 router.get('/fileDownload', companyController.fileDownload);
-
+router.get('/queryCompany', companyController.queryCompany);
+router.post('/editCompany', upload.any(), companyController.editCompany);
 
 
 module.exports = router;

@@ -50,8 +50,10 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 		return s.createCompany(APIstub, args)
 	} else if function == "queryAllCompany" {
 		return s.queryAllCompany(APIstub)
-	} else if function == "changeCompanyName" {
-		return s.changeCompanyName(APIstub, args)
+	} else if function == "editCompany" {
+		return s.editCompany(APIstub, args)
+	} else if function == "selectCompany" {
+		return s.selectCompany(APIstub, args)
 	}
 
 	return shim.Error("Invalid Smart Contract function name.")
@@ -85,6 +87,8 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Respo
 	return shim.Success(nil)
 }
 
+
+// 계약서 생성
 func (s *SmartContract) createCompany(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
 	if len(args) != 6 {
@@ -101,6 +105,8 @@ func (s *SmartContract) createCompany(APIstub shim.ChaincodeStubInterface, args 
 	return shim.Success(nil)
 }
 
+
+// 모든 계약서 불러오기
 func (s *SmartContract) queryAllCompany(APIstub shim.ChaincodeStubInterface) sc.Response {
 
 	startKey := "Company0"
@@ -126,7 +132,7 @@ func (s *SmartContract) queryAllCompany(APIstub shim.ChaincodeStubInterface) sc.
 		if bArrayMemberAlreadyWritten == true {
 			buffer.WriteString(",")
 		}
-		buffer.WriteString("{\"Key\":")
+		buffer.WriteString("{\"\":")
 		buffer.WriteString("\"")
 		buffer.WriteString(queryResponse.Key)
 		buffer.WriteString("\"")
@@ -144,10 +150,11 @@ func (s *SmartContract) queryAllCompany(APIstub shim.ChaincodeStubInterface) sc.
 	return shim.Success(buffer.Bytes())
 }
 
-func (s *SmartContract) changeCompanyName(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+// 계약서 수정
+func (s *SmartContract) editCompany(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
-	if len(args) != 2 {
-		return shim.Error("Incorrect number of arguments. Expecting 2")
+	if len(args) != 6 {
+		return shim.Error("Incorrect number of arguments. Expecting 6")
 	}
 
 	companyAsBytes, _ := APIstub.GetState(args[0])
@@ -155,11 +162,34 @@ func (s *SmartContract) changeCompanyName(APIstub shim.ChaincodeStubInterface, a
 
 	json.Unmarshal(companyAsBytes, &company)
 	company.Company_name = args[1]
+	company.My_name = args[2]
+	company.Your_name = args[3]
+	company.Upload_file_name = args[4]
+	company.Upload_file_buffer = args[5]
+
+	
 
 	companyAsBytes, _ = json.Marshal(company)
 	APIstub.PutState(args[0], companyAsBytes)
 
 	return shim.Success(nil)
+}
+
+// 계약서 상세 조회
+func (s *SmartContract) selectCompany(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+	// 인자값이 하나이상이면 에러
+	if len(args) != 1 {
+		return shim.Error("Incorrect number of arguments. Expecting 1")
+	}
+
+	// 인자값 키
+	//key := args[0]
+	// 로그 남기기
+	fmt.Println("계약서 키값:" + args[0])
+
+	resultsIterator, _ := APIstub.GetState(args[0])
+
+	return shim.Success(resultsIterator)
 }
 
 // The main function is only relevant in unit test mode. Only included here for completeness.

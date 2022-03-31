@@ -84,6 +84,9 @@
     margin: 20px 0 0 0;
 }
 
+.backBtn {
+    float: right;
+}
 
 .historyTableBox {
     box-shadow: 0 1px 4px 0 rgb(0 0 0 / 14%);
@@ -121,6 +124,12 @@
 }
 .reject{
     color: red;
+}
+
+.editBtn {
+    background: #ff4081 !important;
+    color: #fff;
+    padding: 0 30px;
 }
 
 
