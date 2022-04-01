@@ -29,7 +29,7 @@ export class MainComponent implements OnInit {
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
     // view table
-    displayedColumns: string[] = ['key', 'company_name', 'my_name', 'your_name', 'upload_file_name'];
+    displayedColumns: string[] = ['key', 'company_name', 'my_name', 'your_name', 'detail_company', 'delete_company'];
 
 
     uploadForm: FormGroup;
@@ -130,7 +130,7 @@ export class MainComponent implements OnInit {
 
     getCompany() {
         this.companyService.queryAllCompany().subscribe((data: any) => {
-            // console.log(data)
+            console.log(data)
             this.dataSource = new MatTableDataSource<PeriodicElement>(data);
             this.dataSource.paginator = this.paginator;
         });
@@ -154,6 +154,30 @@ export class MainComponent implements OnInit {
         })
     }
 
+
+    delete_company(data) {
+        console.log(data)
+
+        // spinner
+        const dialogRef = this.dialog.open(SpinnerDialogComponent, {
+            data: {
+                content: 'Delete'
+            }
+        });
+
+        const key = {
+            key : data
+        }
+        
+
+        this.companyService.delete_company(key).subscribe(async () => {
+            
+            await this.getCompany();
+
+            dialogRef.close();
+        })
+
+    }
 
 
 }

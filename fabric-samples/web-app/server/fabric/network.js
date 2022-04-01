@@ -30,7 +30,7 @@ exports.queryAllCompany = async function() {
         // Create a new file system based wallet for managing identities.
         const walletPath = path.join(process.cwd(), '/wallet');
         const wallet = new FileSystemWallet(walletPath);
-        console.log(`Wallet path: ${walletPath}`);
+        // console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
         const userExists = await wallet.exists('user1');
@@ -81,7 +81,7 @@ exports.createCompany = async function(key, company_name, my_name, your_name, up
         // Create a new file system based wallet for managing identities.
         const walletPath = path.join(process.cwd(), '/wallet');
         const wallet = new FileSystemWallet(walletPath);
-        console.log(`Wallet path: ${walletPath}`);
+        // console.log(`Wallet path: ${walletPath}`);
 
         // Check to see if we've already enrolled the user.
         const userExists = await wallet.exists('user1');
@@ -136,7 +136,7 @@ exports.selectCompany = async function (key) {
         // Create a new file system based wallet for managing identities.
         const walletPath = path.join(process.cwd(), 'wallet');
         const wallet = new FileSystemWallet(walletPath);
-        console.log(`Wallet path: ${walletPath}`);
+        // console.log(`Wallet path: ${walletPath}`);
         // Check to see if we've already enrolled the user.
         const userExists = await wallet.exists('user1');
         if (!userExists) {
@@ -248,7 +248,7 @@ exports.editCompany = async function (key, company_name, my_name, your_name, upl
         // Create a new file system based wallet for managing identities.
         const walletPath = path.join(process.cwd(), 'wallet');
         const wallet = new FileSystemWallet(walletPath);
-        console.log(`Wallet path: ${walletPath}`);
+        // console.log(`Wallet path: ${walletPath}`);
         // Check to see if we've already enrolled the user.
         const userExists = await wallet.exists('user1');
         if (!userExists) {
@@ -272,8 +272,50 @@ exports.editCompany = async function (key, company_name, my_name, your_name, upl
         await gateway.disconnect();
         response.msg = 'editCompany Transaction has been submitted';
         return response;
+        
     } catch (error) {
         console.error(`Failed to submit transaction: ${error}`);
+        response.error = error.message;
+        return response;
+    }
+}
+
+
+
+// 계약서 삭제
+exports.deleteCompany = async function (key) {
+    try {
+        console.log('starting to deleteCompany')
+        var response = {};
+        // Create a new file system based wallet for managing identities.
+        const walletPath = path.join(process.cwd(), 'wallet');
+        const wallet = new FileSystemWallet(walletPath);
+        // console.log(`Wallet path: ${walletPath}`);
+        // Check to see if we've already enrolled the user.
+        const userExists = await wallet.exists('user1');
+        if (!userExists) {
+            console.log('An identity for the user ' + 'user1' + ' does not exist in the wallet');
+            console.log('Run the registerUser.js application before retrying');
+            response.error = 'An identity for the user ' + 'user1' + ' does not exist in the wallet. Register ' + 'user1' + ' first';
+            return response;
+        }
+
+        // Create a new gateway for connecting to our peer node.
+        const gateway = new Gateway();
+        await gateway.connect(connectionFile, { wallet, identity: 'user1', discovery: { enabled: true, asLocalhost: true } });
+        // Get the network (channel) our contract is deployed to.
+        const network = await gateway.getNetwork('mychannel');
+        // Get the contract from the network.
+        const contract = network.getContract('mycc');
+        await contract.submitTransaction('deleteCompany', key);
+        console.log('Transaction has been submitted');
+        // Disconnect from the gateway.
+        await gateway.disconnect();
+        response.msg = 'deleteCompany Transaction has been submitted';
+        return response;
+
+    } catch (error) {
+        console.error(`Failed to evaluate transaction: ${error}`);
         response.error = error.message;
         return response;
     }

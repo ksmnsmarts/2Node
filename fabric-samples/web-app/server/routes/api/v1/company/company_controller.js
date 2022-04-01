@@ -157,7 +157,7 @@ exports.queryCompany = async (req, res) => {
 
     try {
 
-        console.log(req.query.key)
+        // console.log(req.query.key)
 
         const key = req.query.key
 
@@ -230,6 +230,37 @@ exports.editCompany = async (req, res) => {
         console.log('[ ERROR ]', err);
         res.status(500).send({
             message: 'add company error'
+        })
+    }
+};
+
+
+
+exports.deleteCompany = async (req, res) => {
+    console.log(`
+--------------------------------------------------
+  User : Hyperledger-Fabric Test User
+  API  : Get company Info
+  router.delete('/deleteCompany', companyController.deleteCompany);
+--------------------------------------------------`);
+    const dbModels = global.DB_MODELS;
+
+    try {
+
+        console.log(req.query.key)
+
+        const key = req.query.key
+
+        network.deleteCompany(key).then((response) => {
+            
+            return res.send(response)
+        });
+
+    } catch (err) {
+
+        console.log('[ ERROR ]', err);
+        res.status(500).send({
+            message: 'query company error'
         })
     }
 };

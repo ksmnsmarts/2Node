@@ -129,6 +129,14 @@ th{
 }
 
 .mat-row:hover {
-    cursor: pointer;
+    // cursor: pointer;
     background-color: rgb(206, 206, 206);
+}
+
+.details_company:hover {
+    cursor: pointer;
+}
+
+.delete_company:hover {
+    cursor: pointer;
 }

@@ -84,37 +84,43 @@
                 <ng-container matColumnDef="key">
                     <th mat-header-cell *matHeaderCellDef style="
                     text-align: center"> Key </th>
-                    <td mat-cell *matCellDef="let element" class="item"> {{element.Key}}</td>
+                    <td mat-cell *matCellDef="let element" class="item"> {{element?.Key}}</td>
                 </ng-container>
     
                 <!-- Weight Column -->
                 <ng-container matColumnDef="company_name">
                     <th mat-header-cell *matHeaderCellDef style="
                     text-align: center"> Company Name </th>
-                    <td mat-cell *matCellDef="let element" class="item"> {{element.Record.company_name}} </td>
+                    <td mat-cell *matCellDef="let element" class="item"> {{element?.Record?.company_name}} </td>
                 </ng-container>
     
                 <!-- Symbol Column -->
                 <ng-container matColumnDef="my_name">
                     <th mat-header-cell *matHeaderCellDef style="
                     text-align: center"> My Name </th>
-                    <td mat-cell *matCellDef="let element"class="item"> {{element.Record.my_name}} </td>
+                    <td mat-cell *matCellDef="let element"class="item"> {{element?.Record?.my_name}} </td>
                 </ng-container>
     
                 <ng-container matColumnDef="your_name">
                     <th mat-header-cell *matHeaderCellDef style="
                     text-align: center"> Your Name </th>
-                    <td mat-cell *matCellDef="let element"class="item"> {{element.Record.your_name}} </td>
+                    <td mat-cell *matCellDef="let element"class="item"> {{element?.Record?.your_name}} </td>
                 </ng-container>
 
-                <ng-container matColumnDef="upload_file_name">
+                <ng-container matColumnDef="detail_company">
                     <th mat-header-cell *matHeaderCellDef style="
-                    text-align: center">  </th>
-                    <td mat-cell *matCellDef="let element"class="item"> <mat-icon class="cursor">visibility</mat-icon> </td>
+                    text-align: center"> details </th>
+                    <td mat-cell *matCellDef="let element"class="item" class="details_company" (click)="detailKey(element)"> <mat-icon class="cursor">visibility</mat-icon> </td>
+                </ng-container>
+
+                <ng-container matColumnDef="delete_company">
+                    <th mat-header-cell *matHeaderCellDef style="
+                    text-align: center"> Delete </th>
+                    <td mat-cell *matCellDef="let element"class="item" (click)="delete_company(element.Key)" class="delete_company"> <mat-icon class="cursor">delete</mat-icon> </td>
                 </ng-container>
     
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="detailKey(row)"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 <tr class="mat-row" *matNoDataRow>
                     <td class="mat-cell" colspan="9999">
                         No data
@@ -123,7 +129,7 @@
     
     
             </table>
-            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+            <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons
                 aria-label="Select page of periodic elements">
             </mat-paginator>
     

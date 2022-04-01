@@ -38,4 +38,9 @@ export class CompanyService {
         return this.http.post('/api/v1/company/editCompany', data);
     }
 
+    // 회사 삭제
+    delete_company(data) {
+        return this.http.delete('/api/v1/company/deleteCompany', {params: data});
+    }
+
 }

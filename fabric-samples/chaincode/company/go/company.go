@@ -54,6 +54,8 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 		return s.editCompany(APIstub, args)
 	} else if function == "selectCompany" {
 		return s.selectCompany(APIstub, args)
+	} else if function == "deleteCompany" {
+		return s.deleteCompany(APIstub, args)
 	}
 
 	return shim.Error("Invalid Smart Contract function name.")
@@ -132,7 +134,7 @@ func (s *SmartContract) queryAllCompany(APIstub shim.ChaincodeStubInterface) sc.
 		if bArrayMemberAlreadyWritten == true {
 			buffer.WriteString(",")
 		}
-		buffer.WriteString("{\"\":")
+		buffer.WriteString("{\"Key\":")
 		buffer.WriteString("\"")
 		buffer.WriteString(queryResponse.Key)
 		buffer.WriteString("\"")
@@ -191,6 +193,83 @@ func (s *SmartContract) selectCompany(APIstub shim.ChaincodeStubInterface, args 
 
 	return shim.Success(resultsIterator)
 }
+
+
+// 계약서 삭제
+func (s *SmartContract) deleteCompany(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+	// 인자값이 하나이상이면 에러
+	if len(args) != 1 {
+		return shim.Error("Incorrect number of arguments. Expecting 1")
+	}
+
+	// 인자값 키
+	//key := args[0]
+	// 로그 남기기
+	fmt.Println("계약서 키값:" + args[0])
+
+	// Delete the key from the state in ledger
+	err := APIstub.DelState(args[0])
+	if err != nil {
+	 	return shim.Error("Failed to delete state")
+	}
+
+	companyAsBytes, _ := APIstub.GetState(args[0])
+	company := Company{}
+
+	if err != nil {
+		return shim.Error("Failed to get company index")
+   }
+
+   var companyIndex []string
+	json.Unmarshal(companyAsBytes, &company) //un stringify it aka JSON.parse()
+
+	//remove company from index
+	for i, val := range companyIndex {
+		fmt.Println(strconv.Itoa(i) + " - looking at " + val + " for " + args[0])
+		if val == args[0] { //find the correct company
+			fmt.Println("found company")
+			companyIndex = append(companyIndex[:i], companyIndex[i+1:]...) //remove it
+			for x := range companyIndex {                                //debug prints...
+				fmt.Println(string(x) + " - " + companyIndex[x])
+			}
+			break
+		}
+	}
+
+	companyAsBytes, _ = json.Marshal(companyIndex)
+	APIstub.PutState(args[0], companyAsBytes)
+
+
+	// jsonAsBytes, _ := json.Marshal(companyIndex) //save new index
+	// err = APIstub.PutState(companyAsBytes, jsonAsBytes)
+	return shim.Success(nil)
+
+
+
+	// company := Company{}
+
+	// json.Unmarshal(companyAsBytes, &company)
+	// company.Company_name = args[1]
+	// company.My_name = args[2]
+	// company.Your_name = args[3]
+	// company.Upload_file_name = args[4]
+	// company.Upload_file_buffer = args[5]
+
+	
+
+	// companyAsBytes, _ = json.Marshal(company)
+	// APIstub.PutState(args[0], companyAsBytes)
+
+	// return shim.Success(nil)
+	
+	
+
+
+   
+	// return shim.Success(nil)
+}
+
+
 
 // The main function is only relevant in unit test mode. Only included here for completeness.
 func main() {

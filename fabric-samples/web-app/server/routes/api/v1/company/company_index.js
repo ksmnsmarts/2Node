@@ -36,6 +36,7 @@ router.post('/addCompany', upload.any(), companyController.addCompany);
 router.get('/fileDownload', companyController.fileDownload);
 router.get('/queryCompany', companyController.queryCompany);
 router.post('/editCompany', upload.any(), companyController.editCompany);
+router.delete('/deleteCompany', companyController.deleteCompany);
 
 
 module.exports = router;
