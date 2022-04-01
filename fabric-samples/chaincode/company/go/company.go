@@ -239,34 +239,7 @@ func (s *SmartContract) deleteCompany(APIstub shim.ChaincodeStubInterface, args 
 	companyAsBytes, _ = json.Marshal(companyIndex)
 	APIstub.PutState(args[0], companyAsBytes)
 
-
-	// jsonAsBytes, _ := json.Marshal(companyIndex) //save new index
-	// err = APIstub.PutState(companyAsBytes, jsonAsBytes)
 	return shim.Success(nil)
-
-
-
-	// company := Company{}
-
-	// json.Unmarshal(companyAsBytes, &company)
-	// company.Company_name = args[1]
-	// company.My_name = args[2]
-	// company.Your_name = args[3]
-	// company.Upload_file_name = args[4]
-	// company.Upload_file_buffer = args[5]
-
-	
-
-	// companyAsBytes, _ = json.Marshal(company)
-	// APIstub.PutState(args[0], companyAsBytes)
-
-	// return shim.Success(nil)
-	
-	
-
-
-   
-	// return shim.Success(nil)
 }
 
 
